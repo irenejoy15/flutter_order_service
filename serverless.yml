@@ -10,6 +10,9 @@ provider:
   # STEP 2
   environment:
     DYNAMODB_TABLE: Orders
+    # STEP 4
+    SQS_QUEUE_URL: https://sqs.us-east-1.amazonaws.com/660880134927/OrdersQueue
+    # END STEP 4
   # END STEP 2
   # STEP 3
   iamRoleStatements:
@@ -33,6 +36,12 @@ resources:
           - AttributeName: id
             KeyType: HASH #partition key
   # END STEP 1
+  # STEP 4
+    OrdersQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: OrdersQueue
+  # END STEP 4
 
 functions:
 # STEP 2

@@ -1,9 +1,11 @@
 // STEP 2
 const {DynamoDBClient, PutItemCommand} = require('@aws-sdk/client-dynamodb');
+// STEP 4
+const {SQSClient, SendMessageCommand} = require('@aws-sdk/client-sqs');
+const sqsClient = new SQSClient({region: 'us-east-1'});
+// END STEP 4
 const axios = require('axios');
 const cryto = require('crypto');
-const { stat } = require('fs');
-const { json } = require('stream/consumers');
 
 const dbClient = new DynamoDBClient({region: 'us-east-1'});
 
@@ -37,18 +39,24 @@ exports.placeOrder = async (event) => {
        
         const orderId = cryto.randomUUID();
         const orderPayload = {
-            id : {S: orderId},
-            productId: {S: id},
-            quantity: {N: quantity.toString()},
-            email: {S: email},
-            status: {S: 'PENDING'},
-            createdAt: {S: new Date().toISOString()},
+            id : orderId,
+            productId: id,
+            quantity,
+            email,
+            status: 'PENDING',
+            createdAt: new Date().toISOString(),
 
         }
-        await dbClient.send(new PutItemCommand({
-            TableName: process.env.DYNAMODB_TABLE,
-            Item: orderPayload,
+        // STEP 4 - Send order details to SQS
+        await sqsClient.send(new SendMessageCommand({
+            QueueUrl: process.env.SQS_QUEUE_URL,
+            MessageBody: JSON.stringify(orderPayload),
         }));
+        // END STEP 4
+        // await dbClient.send(new PutItemCommand({
+        //     TableName: process.env.DYNAMODB_TABLE,
+        //     Item: orderPayload,
+        // }));
 
         return {
             statusCode: 201,
