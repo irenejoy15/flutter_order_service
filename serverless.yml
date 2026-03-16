@@ -5,10 +5,26 @@ service: orderService
 
 provider:
   name: aws
-  runtime: nodejs20.x
-  # Uncomment to easily set up a custom domain. Read the docs for more details:
-  # https://www.serverless.com/framework/docs/providers/aws/guide/domains
-  # domain: api.example.com
+  # STEP 1
+  runtime: nodejs24.x
+  # STEP 2
+  environment:
+    DYNAMODB_TABLE: Orders
+  # END STEP 2
+resources:
+  Resources:
+    OrderTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Orders
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S #string
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH #partition key
+  # END STEP 1
 
 functions:
   hello:
