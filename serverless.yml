@@ -19,8 +19,16 @@ provider:
     - Effect: 'Allow'
       Action:
         - 'dynamodb:PutItem'
+        # STEP 5
+        - 'sqs:SendMessage'
+        - 'sqs:ReceiveMessage'
+        - 'sqs:DeleteMessage'
+        # END STEP 5
       Resource: 
         - Fn::GetAtt: [OrderTable, Arn]
+        # STEP 5
+        - Fn::GetAtt: [OrdersQueue, Arn]
+        # END STEP 5
   # END STEP 3
 resources:
   Resources:
