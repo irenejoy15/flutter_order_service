@@ -27,9 +27,9 @@ resources:
   # END STEP 1
 
 functions:
-  hello:
-    handler: handler.hello
+  placeOrder:
+    handler: handlers/placeOrder.placeOrder
     events:
       - httpApi:
           path: /
-          method: get
+          method: post

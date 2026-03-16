@@ -17,14 +17,14 @@ exports.placeOrder = async (event) => {
         }
         const productsResponse = await axios.get(`https://4sfecl9ji9.execute-api.us-east-1.amazonaws.com/products`);
         const approvedProducts = productsResponse.data || [];
-        const product = approvedProducts.find(p => p.id?.S === id);
+        const product = approvedProducts.find(p => p.id === id);
         if(!product){
             return {
                 statusCode: 404,
                 body: JSON.stringify({msg: 'Product not found'}),
             };
         }
-        const availableStock = parseInt(product.quantity?.N || '0');
+        const availableStock = parseInt(product.quantity || '0');
         if(availableStock < quantity){
             return {
                 statusCode: 400,
