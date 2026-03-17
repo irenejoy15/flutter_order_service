@@ -60,3 +60,11 @@ functions:
           path: /place-order
           method: post
 # END STEP 2
+# STEP 6
+  processOrder:
+    handler: handlers/processOrder.processOrder
+    events:
+      - sqs:
+          arn: 
+            Fn::GetAtt: [OrdersQueue, Arn]
+# END STEP 6
