@@ -7,6 +7,16 @@ provider:
   name: aws
   # STEP 1
   runtime: nodejs24.x
+  # STEP 10 
+  httpApi:
+    authorizers:
+      myCognitoAuth:
+        identitySource: $request.header.Authorization
+        issuerUrl: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_W60RMNZ1Y
+        audience: 
+          - 75gmpfq557c7khpelrdmdgpgh6
+        
+  # END STEP 10
   # STEP 2
   environment:
     DYNAMODB_TABLE: Orders
@@ -72,6 +82,10 @@ functions:
       - httpApi:
           path: /place-order
           method: post
+      # STEP 10 - Add Cognito Authorizer to the API endpoint
+          authorizer: 
+            name: myCognitoAuth
+      # END STEP 10
 # END STEP 2
 # STEP 6
   processOrder:
