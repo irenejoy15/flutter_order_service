@@ -50,6 +50,12 @@ resources:
       Properties:
         QueueName: OrdersQueue
   # END STEP 4
+  # STEP 8
+    OrderServiceEmailIdentity:
+      Type: AWS::SES::EmailIdentity
+      Properties:
+        EmailIdentity: irenejoy15@gmail.com
+  # END STEP 8
 
 functions:
 # STEP 2
