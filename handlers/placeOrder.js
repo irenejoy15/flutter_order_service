@@ -47,7 +47,7 @@ exports.placeOrder = async (event) => {
             productId: id,
             fullName,
             productName: product.productName,
-            productPrice: product.price,
+            productPrice: product.productPrice,
             quantity,
             email,
             status: 'PENDING',

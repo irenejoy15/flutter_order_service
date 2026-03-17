@@ -14,11 +14,11 @@ exports.processOrder = async (event) => {
                 Item: {
                     id: { S: id },
                     productId: { S: productId },
-                    quantity: { N: quantity.toString() },
                     email: { S: email },
                     fullName: { S: fullName },
                     productName: { S: productName },
                     productPrice: { N: productPrice.toString() },
+                    quantity: { N: quantity.toString() },
                     status: { S: status },
                     createdAt: { S: createdAt }
                 }
