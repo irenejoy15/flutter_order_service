@@ -23,12 +23,19 @@ provider:
         - 'sqs:SendMessage'
         - 'sqs:ReceiveMessage'
         - 'sqs:DeleteMessage'
+        # STEP 9
+        - 'ses:SendEmail'
+        - 'ses:SendRawEmail'
+        # END STEP 9
         # END STEP 5
       Resource: 
         - Fn::GetAtt: [OrderTable, Arn]
         # STEP 5
         - Fn::GetAtt: [OrdersQueue, Arn]
         # END STEP 5
+        # STEP 9
+        - arn:aws:ses:us-east-1:660880134927:identity/irenejoy15@gmail.com
+        # END STEP 9
   # END STEP 3
 resources:
   Resources:
