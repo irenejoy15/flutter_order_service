@@ -9,6 +9,10 @@ const cryto = require('crypto');
 
 const dbClient = new DynamoDBClient({region: 'us-east-1'});
 
+// STEP 7
+const {sendOrderEmail} = require('../services/sendEmail');
+// END STEP 7
+
 exports.placeOrder = async (event) => {
     try{
         const {id,quantity, email} = JSON.parse(event.body);
@@ -57,6 +61,15 @@ exports.placeOrder = async (event) => {
         //     TableName: process.env.DYNAMODB_TABLE,
         //     Item: orderPayload,
         // }));
+
+        // STEP 7 - Send order confirmation email
+        await sendOrderEmail(
+            email, 
+            orderId, 
+            product.productName?.S || 'Unknown Product', 
+            quantity
+        );
+        // END STEP 7
 
         return {
             statusCode: 201,
