@@ -6,7 +6,7 @@ exports.processOrder = async (event) => {
     try{
         for(const record of event.Records){
             const orderData = JSON.parse(record.body);
-            const {id,productId,quantity,email,status,createdAt} = orderData;
+            const {id,productId,quantity,email,status,createdAt, fullName, productName, productPrice} = orderData;
 
             // SEND A COMMAND TO DYNAMODB TO STORE THE ORDER IN THE ORDERS TABLE
             await dynamoDBClient.send(new PutItemCommand({
@@ -16,6 +16,9 @@ exports.processOrder = async (event) => {
                     productId: { S: productId },
                     quantity: { N: quantity.toString() },
                     email: { S: email },
+                    fullName: { S: fullName },
+                    productName: { S: productName },
+                    productPrice: { N: productPrice.toString() },
                     status: { S: status },
                     createdAt: { S: createdAt }
                 }

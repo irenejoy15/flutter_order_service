@@ -15,8 +15,8 @@ const {sendOrderEmail} = require('../services/sendEmail');
 
 exports.placeOrder = async (event) => {
     try{
-        const {id,quantity, email} = JSON.parse(event.body);
-        if(!id || !quantity || !email){
+        const {id,quantity, email, fullName} = JSON.parse(event.body);
+        if(!id || !quantity || !email || !fullName){
             return {
                 statusCode: 400,
                 body: JSON.stringify({msg: 'Missing required fields'}),
@@ -45,6 +45,9 @@ exports.placeOrder = async (event) => {
         const orderPayload = {
             id : orderId,
             productId: id,
+            fullName,
+            productName: product.productName,
+            productPrice: product.price,
             quantity,
             email,
             status: 'PENDING',
